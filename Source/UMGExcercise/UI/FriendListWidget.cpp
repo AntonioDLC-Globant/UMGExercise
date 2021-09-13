@@ -34,11 +34,17 @@ void UFriendListWidget::AddFriend(const FString& Name)
 
 void UFriendListWidget::ToogleListWidget()
 {
-	ListWidget->IsVisible() ? FoldListWidget() : UnfoldListWidget();
+	!bIsFolded ? FoldListWidget() : UnfoldListWidget();
+	bIsFolded = !bIsFolded;
 }
 
 void UFriendListWidget::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
 	ListCollapser->OnClicked.AddDynamic(this, &UFriendListWidget::ToogleListWidget);
+}
+
+void UFriendListWidget::SetName(const FString& name)
+{
+	StatusName->SetText(FText::FromString(name));
 }

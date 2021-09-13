@@ -20,10 +20,19 @@ public:
 	UPROPERTY(meta = (BindWidget), BlueprintReadOnly)
 	class UButton* ListCollapser;
 
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
+	class UTextBlock* StatusName;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class UFriendEntryWidget> FriendEntryWidgetClass;
 
+	UPROPERTY()
+	bool bIsFolded = false;
+
 	void NativeOnInitialized() override;
+
+	UFUNCTION(BlueprintCallable)
+	void SetName(const FString& name);
 
 	UFUNCTION()
 	void AddFriend(const FString& Name);
