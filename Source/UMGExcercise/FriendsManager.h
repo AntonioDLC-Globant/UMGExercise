@@ -34,8 +34,8 @@ public:
 	UPROPERTY()
 	TArray<FFriendProfileStruct> AllFriends;
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void OnFriendConnectedEvent(const FString& Name);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UFriendsViewModel* FriendsViewModel;
 
 	UFUNCTION()
 	void Initialize();

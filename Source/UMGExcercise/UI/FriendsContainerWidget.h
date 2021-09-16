@@ -4,18 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Engine/DataTable.h" 
 #include "UMGExcercise/FriendsManager.h"
 
 #include "FriendsContainerWidget.generated.h"
 
 class UFriendListWidget;
 class UVerticalBox;
-class UButton;
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType, Blueprintable)
 class UMGEXCERCISE_API UFriendsContainerWidget : public UUserWidget
 {
 	GENERATED_BODY()
@@ -27,7 +25,11 @@ public:
 	UPROPERTY(meta = (BindWidget), BlueprintReadOnly)
 	UFriendListWidget* OfflineFriendList;
 
-	void NativeOnInitialized() override;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UFriendsViewModel* FriendsViewModel;
+
+	virtual void NativeOnInitialized() override;
+	virtual void NativeDestruct() override;
 
 	UFUNCTION()
 	void FriendConnected(const FString& Name);

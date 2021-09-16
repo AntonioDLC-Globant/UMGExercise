@@ -6,6 +6,7 @@
 #include "UMGExcercise/UMGExerciseGameInstance.h"
 #include "UMGExcercise/FriendsManager.h"
 #include "Components/TextBlock.h"
+#include "FriendsViewModel.h"
 
 void UFriendConnectionChangedWidget::FriendConnected_Implementation(const FString& Name)
 {
@@ -20,7 +21,13 @@ void UFriendConnectionChangedWidget::FriendDisconnected_Implementation(const FSt
 void UFriendConnectionChangedWidget::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
-	UFriendsManager* FriendsManager = GetGameInstance<UUMGExerciseGameInstance>()->FriendsManager;
-	FriendsManager->OnFriendConnectedDelegate.AddDynamic(this, &UFriendConnectionChangedWidget::FriendConnected);
-	FriendsManager->OnFriendDisconnectedDelegate.AddDynamic(this, &UFriendConnectionChangedWidget::FriendDisconnected);
+
+	FriendsViewModel->OnFriendConnectedDelegate.AddDynamic(this, &UFriendConnectionChangedWidget::FriendConnected);
+	FriendsViewModel->OnFriendDisconnectedDelegate.AddDynamic(this, &UFriendConnectionChangedWidget::FriendDisconnected);
+}
+
+void UFriendConnectionChangedWidget::NativeDestruct()
+{
+	FriendsViewModel->OnFriendConnectedDelegate.RemoveDynamic(this, &UFriendConnectionChangedWidget::FriendConnected);
+	FriendsViewModel->OnFriendDisconnectedDelegate.RemoveDynamic(this, &UFriendConnectionChangedWidget::FriendDisconnected);
 }

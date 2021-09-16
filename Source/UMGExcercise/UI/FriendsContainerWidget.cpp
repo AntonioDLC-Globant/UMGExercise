@@ -6,8 +6,7 @@
 #include "FriendListWidget.h"
 #include "UMGExcercise/FriendProfile.h"
 #include "Components/TextBlock.h"
-#include "Components/VerticalBox.h"
-#include "Components/Button.h"
+#include "FriendsViewModel.h"
 #include "UMGExcercise/UMGExerciseGameInstance.h"
 
 void UFriendsContainerWidget::MoveFriendEntryWidget(UFriendListWidget* From, UFriendListWidget* To, FString Name)
@@ -23,12 +22,17 @@ void UFriendsContainerWidget::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
 
-	UFriendsManager* FriendsManager = GetGameInstance<UUMGExerciseGameInstance>()->FriendsManager;
-	for (auto FriendProfile : FriendsManager->AllFriends)
+	for (auto FriendProfile : FriendsViewModel->GetAllFriends())
 	{
 		FriendProfile.Connected ? FriendConnected(FriendProfile.Name) : FriendDisconnected(FriendProfile.Name);
 	}
 
-	FriendsManager->OnFriendConnectedDelegate.AddDynamic(this, &UFriendsContainerWidget::FriendConnected);
-	FriendsManager->OnFriendDisconnectedDelegate.AddDynamic(this, &UFriendsContainerWidget::FriendDisconnected);
+	FriendsViewModel->OnFriendConnectedDelegate.AddDynamic(this, &UFriendsContainerWidget::FriendConnected);
+	FriendsViewModel->OnFriendDisconnectedDelegate.AddDynamic(this, &UFriendsContainerWidget::FriendDisconnected);
+}
+
+void UFriendsContainerWidget::NativeDestruct()
+{
+	FriendsViewModel->OnFriendConnectedDelegate.RemoveDynamic(this, &UFriendsContainerWidget::FriendConnected);
+	FriendsViewModel->OnFriendDisconnectedDelegate.RemoveDynamic(this, &UFriendsContainerWidget::FriendDisconnected);
 }

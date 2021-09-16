@@ -16,21 +16,24 @@ UCLASS()
 class UMGEXCERCISE_API UFriendConnectionChangedWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 public:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Message;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UFriendsViewModel* FriendsViewModel;
 
 	UFUNCTION(BlueprintNativeEvent)
 	void FriendConnected(const FString& Name);
 	UFUNCTION(BlueprintCallable)
 	virtual void FriendConnected_Implementation(const FString& Name);
-
-
+	
 	UFUNCTION(BlueprintNativeEvent)
 	void FriendDisconnected(const FString& Name);
 	UFUNCTION(BlueprintCallable)
 	virtual void FriendDisconnected_Implementation(const FString& Name);
 
-	void NativeOnInitialized() override;
+	virtual void NativeOnInitialized() override;
+	virtual void NativeDestruct() override;
 };

@@ -3,6 +3,8 @@
 
 #include "FriendsManager.h"
 
+#include "UI/FriendsViewModel.h"
+
 void UFriendsManager::Initialize()
 {
 	UWorld* World = GetWorld();
@@ -24,9 +26,10 @@ void UFriendsManager::Initialize()
 
 		FTimerHandle MyTimer;
 		World->GetTimerManager().SetTimer(MyTimer, this, &UFriendsManager::ToogleRandomFriendStatus, 3.0f, true/*InbLoop*/);
-	}
 
-	OnFriendConnectedDelegate.AddDynamic(this, &UFriendsManager::OnFriendConnectedEvent);
+		FriendsViewModel->Initialize(this);
+	}
+	//else error
 }
 
 void UFriendsManager::ToogleRandomFriendStatus()
